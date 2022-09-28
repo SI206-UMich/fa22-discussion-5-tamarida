@@ -3,8 +3,8 @@ import unittest
 # Counts the number of a's in a sentence (e.g., a string)
 def count_a(sentence):
 	total = 0
-	for i in range(len(sentence) - 1):
-		if i == 'a':
+	for i in range(len(sentence)):
+		if sentence[i] == 'a':
 			total += 1
 	return total
 
@@ -38,15 +38,27 @@ class Warehouse:
 
 	# Adds an item to the warehouse	
 	def add_item(self, item):
-		pass
+		return self.items.append(item)
 
 	# Returns the item in the warehouse with the most stock		
 	def get_max_stock(self):
-		pass
+		max = self.items[0].stock
+		max_item = self.items[0]
+		for item in self.items[1:]: 
+			if item.stock > max:
+				max = item.stock
+				max_item = item
+		return max_item
 	
 	# Returns the item in the warehouse with the highest price
 	def get_max_price(self):
-		pass	
+		max = 0
+		max_item = None
+		for item in self.items[1:]: 
+			if item.price > max:
+				max = item.price
+				max_item = item
+		return max_item	
 
 
 
@@ -63,22 +75,39 @@ class TestAllMethods(unittest.TestCase):
 
 	## Check to see whether count_a works
 	def test_count_a(self):
-		pass
+		aaa_count = count_a('aaa')
+		self.assertEqual(aaa_count, 3)
+
+		abaaba_count = count_a('abaaba')
+		self.assertEqual(abaaba_count, 4)
 
 
 	## Check to see whether you can add an item to the warehouse
 	def test_add_item(self):
-		pass
+		warehouse1 = Warehouse() #Create a new warhouse object 
+		warehouse1.add_item(self.item1)
+		warehouse1.add_item(self.item2)
+		warehouse1.add_item(self.item3)
+
+		self.assertEqual(warehouse1.items,[self.item1, self.item2, self.item3]) #to see if the warehouse item is equal to all of the items
+
+		warehouse1.add_item(self.item4)
+
+		self.assertEqual(warehouse1.items,[self.item1, self.item2, self.item3, self.item4])		
 
 
 	## Check to see whether warehouse correctly returns the item with the most stock
 	def test_warehouse_max_stocks(self):
-		pass
+		warehouse1 = Warehouse([self.item1, self.item2])
+		max_item = warehouse1.get_max_stock()
+		self.assertEqual([max_item, self.item2])
 
 
 	# Check to see whether the warehouse correctly return the item with the highest price
 	def test_warehouse_max_price(self):
-		pass
+		warehouse1 = Warehouse([self.item1, self.item2])
+		max_item = warehouse1.get_max_price()
+		self.assertEqual([max_item, self.item2])
 		
 
 def main():
